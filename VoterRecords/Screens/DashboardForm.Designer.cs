@@ -30,13 +30,17 @@
         {
             this.menuBar = new System.Windows.Forms.MenuStrip();
             this.changePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addRecordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addRecordToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.modifyRecordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuBar
             // 
             this.menuBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.changePasswordToolStripMenuItem});
+            this.changePasswordToolStripMenuItem,
+            this.addRecordToolStripMenuItem});
             this.menuBar.Location = new System.Drawing.Point(0, 0);
             this.menuBar.Name = "menuBar";
             this.menuBar.Size = new System.Drawing.Size(860, 24);
@@ -49,6 +53,28 @@
             this.changePasswordToolStripMenuItem.Size = new System.Drawing.Size(113, 20);
             this.changePasswordToolStripMenuItem.Text = "&Change Password";
             this.changePasswordToolStripMenuItem.Click += new System.EventHandler(this.ChangePasswordToolStripMenuItem_Click);
+            // 
+            // addRecordToolStripMenuItem
+            // 
+            this.addRecordToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addRecordToolStripMenuItem1,
+            this.modifyRecordToolStripMenuItem});
+            this.addRecordToolStripMenuItem.Name = "addRecordToolStripMenuItem";
+            this.addRecordToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.addRecordToolStripMenuItem.Text = "&Records";
+            // 
+            // addRecordToolStripMenuItem1
+            // 
+            this.addRecordToolStripMenuItem1.Name = "addRecordToolStripMenuItem1";
+            this.addRecordToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.addRecordToolStripMenuItem1.Text = "&Add Record";
+            this.addRecordToolStripMenuItem1.Click += new System.EventHandler(this.AddRecordToolStripMenuItem1_Click);
+            // 
+            // modifyRecordToolStripMenuItem
+            // 
+            this.modifyRecordToolStripMenuItem.Name = "modifyRecordToolStripMenuItem";
+            this.modifyRecordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.modifyRecordToolStripMenuItem.Text = "&Modify Record";
             // 
             // DashboardForm
             // 
@@ -77,5 +103,8 @@
 
         private System.Windows.Forms.MenuStrip menuBar;
         private System.Windows.Forms.ToolStripMenuItem changePasswordToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addRecordToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addRecordToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem modifyRecordToolStripMenuItem;
     }
 }

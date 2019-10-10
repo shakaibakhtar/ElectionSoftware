@@ -47,5 +47,10 @@ namespace VoterRecords.Screens
                 goBack();
             }
         }
+
+        private void AddRecordToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            new AddRecordForm(this);
+        }
     }
 }
