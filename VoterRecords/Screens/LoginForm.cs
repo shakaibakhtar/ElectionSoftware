@@ -15,7 +15,7 @@ namespace VoterRecords.Screens
 {
     public partial class LoginForm : Template
     {
-        VoterRecordsEntities db = new VoterRecordsEntities();
+        VoterRecordsEntities db;// = new VoterRecordsEntities();
         public LoginForm()
         {
             InitializeComponent();
@@ -28,18 +28,15 @@ namespace VoterRecords.Screens
 
         private void BtnLogin_Click(object sender, EventArgs e)
         {
-            btnLogin.Enabled = false;
-            progressBar.Show();
-
             if (isAuthenticated(txtPassword.Text))
             {
-                progressBar.Hide();
                 btnLogin.Enabled = true;
-                // go to dashboard
+                new DashboardForm(this);
             }
             else
             {
                 MessageBox.Show("Invalid password");
+                txtPassword.Focus();
             }
         }
 
@@ -52,7 +49,6 @@ namespace VoterRecords.Screens
                 List<Login> dbPass = db.Logins.Where(x => x.password == password).ToList();
                 if (dbPass.Count > 0)
                 {
-                    progressBar.Hide();
                     res = true;
                 }
             }
@@ -62,6 +58,42 @@ namespace VoterRecords.Screens
             }
 
             return res;
+        }
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+            db = new VoterRecordsEntities();
+            db.Logins.FirstOrDefault();
+        }
+
+        private void TxtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnLogin.Focus();
+            }
+        }
+
+        private void LoginForm_VisibleChanged(object sender, EventArgs e)
+        {
+            clear();
+        }
+
+        private void clear()
+        {
+            if (this.Visible)
+            {
+                txtPassword.Clear();
+                txtPassword.Focus();
+            }
+        }
+
+        private void LoginForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Escape)
+            {
+                this.Dispose();
+            }
         }
     }
 }
