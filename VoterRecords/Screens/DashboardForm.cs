@@ -21,7 +21,6 @@ namespace VoterRecords.Screens
             this.loginForm = loginForm;
             loginForm.Hide();
             this.Show();
-            db = new VoterRecordsEntities();
         }
 
         private void DashboardForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -51,6 +50,19 @@ namespace VoterRecords.Screens
         private void AddRecordToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             new AddRecordForm(this);
+        }
+
+        private void DashboardForm_Load(object sender, EventArgs e)
+        {
+            db = new VoterRecordsEntities();
+            try
+            {
+                dgvVoters.DataSource = db.Voters.ToList();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error: "+ex.Message);
+            }
         }
     }
 }

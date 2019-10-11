@@ -63,7 +63,7 @@
             // txtCNIC
             // 
             this.txtCNIC.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.txtCNIC.Location = new System.Drawing.Point(144, 150);
+            this.txtCNIC.Location = new System.Drawing.Point(146, 150);
             this.txtCNIC.Name = "txtCNIC";
             this.txtCNIC.Size = new System.Drawing.Size(175, 23);
             this.txtCNIC.TabIndex = 3;
@@ -82,7 +82,7 @@
             // txtFather
             // 
             this.txtFather.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.txtFather.Location = new System.Drawing.Point(144, 112);
+            this.txtFather.Location = new System.Drawing.Point(146, 112);
             this.txtFather.Name = "txtFather";
             this.txtFather.Size = new System.Drawing.Size(175, 23);
             this.txtFather.TabIndex = 2;
@@ -112,10 +112,11 @@
             // txtName
             // 
             this.txtName.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.txtName.Location = new System.Drawing.Point(144, 74);
+            this.txtName.Location = new System.Drawing.Point(146, 74);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(175, 23);
             this.txtName.TabIndex = 1;
+            this.txtName.Enter += new System.EventHandler(this.TxtName_Enter);
             this.txtName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TxtName_KeyPress);
             // 
             // lblOld
@@ -186,7 +187,7 @@
             // txtVoteNo
             // 
             this.txtVoteNo.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.txtVoteNo.Location = new System.Drawing.Point(144, 188);
+            this.txtVoteNo.Location = new System.Drawing.Point(146, 188);
             this.txtVoteNo.Name = "txtVoteNo";
             this.txtVoteNo.Size = new System.Drawing.Size(175, 23);
             this.txtVoteNo.TabIndex = 4;

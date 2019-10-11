@@ -100,29 +100,46 @@ namespace VoterRecords.Screens
             {
                 try
                 {
-                    Voter voter = new Voter();
+                    var cnicCount = db.Voters.Where(x=>x.CNIC == txtCNIC.Text).ToList().Count;
+                    var voterNoCount = db.Voters.Where(x=>x.voter_no == txtVoteNo.Text).ToList().Count();
 
-                    voter.name = txtName.Text;
+                    if (cnicCount < 1)
+                    {
+                        if (voterNoCount < 1)
+                        {
+                            Voter voter = new Voter();
 
-                    if (!String.IsNullOrEmpty(txtFather.Text))
-                        voter.father_name = txtFather.Text;
+                            voter.name = txtName.Text;
 
-                    voter.CNIC = txtCNIC.Text;
+                            if (!String.IsNullOrEmpty(txtFather.Text))
+                                voter.father_name = txtFather.Text;
 
-                    if (!String.IsNullOrEmpty(txtVoteNo.Text))
-                        voter.voter_no = txtVoteNo.Text;
-                    if (!String.IsNullOrEmpty(txtFamily.Text))
-                        voter.family = txtFamily.Text;
-                    if (!String.IsNullOrEmpty(txtPhoneNo.Text))
-                        voter.phone = txtPhoneNo.Text;
-                    if (!String.IsNullOrEmpty(txtAddress.Text))
-                        voter.address = txtAddress.Text;
-                    if (!String.IsNullOrEmpty(txtPollingStation.Text))
-                        voter.polling_station = txtPollingStation.Text;
+                            voter.CNIC = txtCNIC.Text;
 
-                    db.Voters.Add(voter);
-                    db.SaveChanges();
-                    MessageBox.Show("Success");
+                            if (!String.IsNullOrEmpty(txtVoteNo.Text))
+                                voter.voter_no = txtVoteNo.Text;
+                            if (!String.IsNullOrEmpty(txtFamily.Text))
+                                voter.family = txtFamily.Text;
+                            if (!String.IsNullOrEmpty(txtPhoneNo.Text))
+                                voter.phone = txtPhoneNo.Text;
+                            if (!String.IsNullOrEmpty(txtAddress.Text))
+                                voter.address = txtAddress.Text;
+                            if (!String.IsNullOrEmpty(txtPollingStation.Text))
+                                voter.polling_station = txtPollingStation.Text;
+
+                            db.Voters.Add(voter);
+                            db.SaveChanges();
+                            MessageBox.Show("Success");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Voter Number: " + txtVoteNo.Text + " already exist");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("CNIC: " + txtCNIC.Text + " already exist");
+                    }
                 }
                 catch(Exception ex)
                 {
@@ -148,5 +165,25 @@ namespace VoterRecords.Screens
 
             return res;
         }
+
+        private void TxtName_Enter(object sender, EventArgs e)
+        {
+            //if (txtName.Text.Equals(""))
+            //{
+            //    SetDefaultText(sender, "Enter Name Here");
+            //}
+        }
+
+        //private void SetDefaultText(object sender, string text)
+        //{
+        //    TextBox sndr = (TextBox)sender;
+        //    sndr.Text = text;
+        //}
+
+        //private void SetEmptyText(object sender)
+        //{
+        //    TextBox sndr = (TextBox)sender;
+        //    sndr.Text = "";
+        //}
     }
 }
