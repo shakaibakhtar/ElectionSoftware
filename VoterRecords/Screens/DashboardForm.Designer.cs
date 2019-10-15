@@ -31,8 +31,7 @@
             this.menuBar = new System.Windows.Forms.MenuStrip();
             this.changePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addRecordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addRecordToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.modifyRecordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvVoters = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
@@ -51,7 +50,8 @@
             // 
             this.menuBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.changePasswordToolStripMenuItem,
-            this.addRecordToolStripMenuItem});
+            this.addRecordToolStripMenuItem,
+            this.logoutToolStripMenuItem});
             this.menuBar.Location = new System.Drawing.Point(0, 0);
             this.menuBar.Name = "menuBar";
             this.menuBar.Size = new System.Drawing.Size(1228, 24);
@@ -67,25 +67,17 @@
             // 
             // addRecordToolStripMenuItem
             // 
-            this.addRecordToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addRecordToolStripMenuItem1,
-            this.modifyRecordToolStripMenuItem});
             this.addRecordToolStripMenuItem.Name = "addRecordToolStripMenuItem";
-            this.addRecordToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.addRecordToolStripMenuItem.Text = "&Records";
+            this.addRecordToolStripMenuItem.Size = new System.Drawing.Size(81, 20);
+            this.addRecordToolStripMenuItem.Text = "&Add Record";
+            this.addRecordToolStripMenuItem.Click += new System.EventHandler(this.AddRecordToolStripMenuItem_Click);
             // 
-            // addRecordToolStripMenuItem1
+            // logoutToolStripMenuItem
             // 
-            this.addRecordToolStripMenuItem1.Name = "addRecordToolStripMenuItem1";
-            this.addRecordToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.addRecordToolStripMenuItem1.Text = "&Add Record";
-            this.addRecordToolStripMenuItem1.Click += new System.EventHandler(this.AddRecordToolStripMenuItem1_Click);
-            // 
-            // modifyRecordToolStripMenuItem
-            // 
-            this.modifyRecordToolStripMenuItem.Name = "modifyRecordToolStripMenuItem";
-            this.modifyRecordToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.modifyRecordToolStripMenuItem.Text = "&Modify Record";
+            this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
+            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.logoutToolStripMenuItem.Text = "Logout";
+            this.logoutToolStripMenuItem.Click += new System.EventHandler(this.LogoutToolStripMenuItem_Click);
             // 
             // dgvVoters
             // 
@@ -101,6 +93,8 @@
             this.dgvVoters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvVoters.Size = new System.Drawing.Size(1228, 323);
             this.dgvVoters.TabIndex = 4;
+            this.dgvVoters.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvVoters_CellDoubleClick);
+            this.dgvVoters.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DgvVoters_KeyDown);
             // 
             // label1
             // 
@@ -115,8 +109,9 @@
             // 
             // txtSearch
             // 
+            this.txtSearch.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.txtSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSearch.Location = new System.Drawing.Point(81, 94);
+            this.txtSearch.Location = new System.Drawing.Point(348, 94);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(225, 29);
             this.txtSearch.TabIndex = 2;
@@ -124,9 +119,10 @@
             // 
             // label2
             // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(422, 98);
+            this.label2.Location = new System.Drawing.Point(689, 98);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(86, 20);
             this.label2.TabIndex = 4;
@@ -134,9 +130,10 @@
             // 
             // panel1
             // 
+            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.panel1.Controls.Add(this.rbCNIC);
             this.panel1.Controls.Add(this.rbName);
-            this.panel1.Location = new System.Drawing.Point(514, 94);
+            this.panel1.Location = new System.Drawing.Point(781, 94);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(149, 29);
             this.panel1.TabIndex = 1;
@@ -169,9 +166,10 @@
             // 
             // label3
             // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(12, 98);
+            this.label3.Location = new System.Drawing.Point(279, 98);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 20);
             this.label3.TabIndex = 6;
@@ -179,8 +177,9 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearch.Location = new System.Drawing.Point(315, 94);
+            this.btnSearch.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearch.Location = new System.Drawing.Point(582, 94);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 29);
             this.btnSearch.TabIndex = 3;
@@ -202,10 +201,10 @@
             this.Controls.Add(this.dgvVoters);
             this.Controls.Add(this.menuBar);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuBar;
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(1244, 490);
             this.Name = "DashboardForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Home";
@@ -227,8 +226,6 @@
         private System.Windows.Forms.MenuStrip menuBar;
         private System.Windows.Forms.ToolStripMenuItem changePasswordToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addRecordToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addRecordToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem modifyRecordToolStripMenuItem;
         private System.Windows.Forms.DataGridView dgvVoters;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtSearch;
@@ -238,5 +235,6 @@
         private System.Windows.Forms.RadioButton rbName;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
     }
 }

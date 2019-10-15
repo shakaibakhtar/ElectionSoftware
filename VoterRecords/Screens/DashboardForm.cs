@@ -48,9 +48,14 @@ namespace VoterRecords.Screens
             }
         }
 
-        private void AddRecordToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void LogoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new AddRecordForm(this, AddRecordForm.taskToPerform.add);
+            goBack();
+        }
+
+        private void AddRecordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new AddRecordForm(this, AddRecordForm.taskToPerform.add, -1);
         }
 
         private void DashboardForm_Load(object sender, EventArgs e)
@@ -103,6 +108,25 @@ namespace VoterRecords.Screens
             {
                 MessageBox.Show("Error: "+ex.Message);
             }
+        }
+
+        private void DgvVoters_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            EditVoter();
+        }
+
+        private void DgvVoters_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                EditVoter();
+            }
+        }
+
+        private void EditVoter()
+        {
+            int id = (int)dgvVoters.CurrentRow.Cells[0].Value;
+            new AddRecordForm(this, AddRecordForm.taskToPerform.update, id);
         }
     }
 }

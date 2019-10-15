@@ -15,15 +15,16 @@ namespace VoterRecords.Screens
     {
         DashboardForm dashboardForm;
         VoterRecordsEntities db;
+        int voterID = -1;
         taskToPerform task;
 
         public enum taskToPerform
         {
             add = 0,
             update = 1
-        } 
+        }
 
-        public AddRecordForm(DashboardForm dashboardForm, taskToPerform task)
+        public AddRecordForm(DashboardForm dashboardForm, taskToPerform task, int voterID)
         {
             InitializeComponent();
             this.dashboardForm = dashboardForm;
@@ -32,11 +33,16 @@ namespace VoterRecords.Screens
             db = new VoterRecordsEntities();
             db.Logins.FirstOrDefault();
             this.task = task;
+            this.voterID = voterID;
+            if (voterID != -1)
+            {
+                FillFormFromDatabase();
+            }
         }
 
 
 
-        private void goBack()
+        private void GoBack()
         {
             this.dashboardForm.Show();
             this.Dispose();
@@ -44,20 +50,20 @@ namespace VoterRecords.Screens
 
         private void AddRecordForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Escape)
+            if (e.KeyCode == Keys.Escape)
             {
-                goBack();
+                GoBack();
             }
         }
 
         private void AddRecordForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            goBack();
+            GoBack();
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
         {
-            goBack();
+            GoBack();
         }
 
         private void TxtCNIC_KeyPress(object sender, KeyPressEventArgs e)
@@ -106,12 +112,69 @@ namespace VoterRecords.Screens
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
+            if (voterID != -1)
+            {
+                UpdateOldRecord();
+            }
+            else
+            {
+                AddNewRecord();
+            }
+
+        }
+
+        private void UpdateOldRecord()
+        {
             if (ValidateFormInputs())
             {
                 try
                 {
-                    var cnicCount = db.Voters.Where(x=>x.CNIC == txtCNIC.Text).ToList().Count;
-                    var voterNoCount = db.Voters.Where(x=>x.voter_no == txtVoteNo.Text).ToList().Count();
+                    var voter = db.Voters.Where(x => x.id == voterID).FirstOrDefault();
+
+                    if (voter != null)
+                    {
+                        voter.name = txtName.Text;
+
+                        if (!String.IsNullOrEmpty(txtFather.Text))
+                            voter.father_name = txtFather.Text;
+
+                        voter.CNIC = txtCNIC.Text;
+
+                        if (!String.IsNullOrEmpty(txtVoteNo.Text))
+                            voter.voter_no = txtVoteNo.Text;
+                        if (!String.IsNullOrEmpty(txtFamily.Text))
+                            voter.family = txtFamily.Text;
+                        if (!String.IsNullOrEmpty(txtPhoneNo.Text))
+                            voter.phone = txtPhoneNo.Text;
+                        if (!String.IsNullOrEmpty(txtAddress.Text))
+                            voter.address = txtAddress.Text;
+                        if (!String.IsNullOrEmpty(txtPollingStation.Text))
+                            voter.polling_station = txtPollingStation.Text;
+
+                        db.SaveChanges();
+                        MessageBox.Show("Success");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Record not found");
+                        GoBack();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message);
+                }
+            }
+        }
+
+        private void AddNewRecord()
+        {
+            if (ValidateFormInputs())
+            {
+                try
+                {
+                    var cnicCount = db.Voters.Where(x => x.CNIC == txtCNIC.Text).ToList().Count;
+                    var voterNoCount = db.Voters.Where(x => x.voter_no == txtVoteNo.Text).ToList().Count();
 
                     if (cnicCount < 1)
                     {
@@ -151,9 +214,9 @@ namespace VoterRecords.Screens
                         MessageBox.Show("CNIC: " + txtCNIC.Text + " already exist");
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Error: "+ex.Message);
+                    MessageBox.Show("Error: " + ex.Message);
                 }
             }
         }
@@ -194,6 +257,27 @@ namespace VoterRecords.Screens
             //{
             //    SetDefaultText(sender, "Enter Name Here");
             //}
+        }
+
+        private void FillFormFromDatabase()
+        {
+            try
+            {
+                var voter = db.Voters.Where(x => x.id == voterID).FirstOrDefault();
+
+                txtName.Text = voter.name;
+                txtFather.Text = voter.father_name;
+                txtCNIC.Text = voter.CNIC;
+                txtVoteNo.Text = voter.voter_no;
+                txtFamily.Text = voter.family;
+                txtPhoneNo.Text = voter.phone;
+                txtAddress.Text = voter.address;
+                txtPollingStation.Text = voter.polling_station;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Sorry! voter record could not be fetched.\n Please try again later.");
+            }
         }
 
         //private void SetDefaultText(object sender, string text)
