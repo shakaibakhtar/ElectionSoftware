@@ -15,6 +15,7 @@ namespace VoterRecords.Screens
     {
         LoginForm loginForm;
         VoterRecordsEntities db;
+
         public DashboardForm(LoginForm loginForm)
         {
             InitializeComponent();
@@ -49,15 +50,54 @@ namespace VoterRecords.Screens
 
         private void AddRecordToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            new AddRecordForm(this);
+            new AddRecordForm(this, AddRecordForm.taskToPerform.add);
         }
 
         private void DashboardForm_Load(object sender, EventArgs e)
         {
             db = new VoterRecordsEntities();
+            refreshVoterList();
+        }
+
+        private void refreshVoterList()
+        {
             try
             {
                 dgvVoters.DataSource = db.Voters.ToList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        private void TxtSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                PerformSearchOn(txtSearch.Text);
+            }
+        }
+
+        private void BtnSearch_Click(object sender, EventArgs e)
+        {
+            PerformSearchOn(txtSearch.Text);
+        }
+
+        private void PerformSearchOn(string keyword)
+        {
+            try
+            {
+                if (rbName.Checked)
+                {
+                    var dgvDataSource = db.Voters.Where(x=>x.name.Contains(keyword)).ToList();
+                    dgvVoters.DataSource = dgvDataSource;
+                }
+                else if (rbCNIC.Checked)
+                {
+                    var dgvDataSource = db.Voters.Where(x => x.CNIC.Contains(keyword)).ToList();
+                    dgvVoters.DataSource = dgvDataSource;
+                }
             }
             catch(Exception ex)
             {

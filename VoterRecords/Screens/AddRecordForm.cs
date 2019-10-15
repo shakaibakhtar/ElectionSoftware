@@ -15,8 +15,15 @@ namespace VoterRecords.Screens
     {
         DashboardForm dashboardForm;
         VoterRecordsEntities db;
+        taskToPerform task;
 
-        public AddRecordForm(DashboardForm dashboardForm)
+        public enum taskToPerform
+        {
+            add = 0,
+            update = 1
+        } 
+
+        public AddRecordForm(DashboardForm dashboardForm, taskToPerform task)
         {
             InitializeComponent();
             this.dashboardForm = dashboardForm;
@@ -24,7 +31,10 @@ namespace VoterRecords.Screens
             dashboardForm.Hide();
             db = new VoterRecordsEntities();
             db.Logins.FirstOrDefault();
+            this.task = task;
         }
+
+
 
         private void goBack()
         {
@@ -160,7 +170,19 @@ namespace VoterRecords.Screens
                     {
                         res = true;
                     }
+                    MessageBox.Show("Invalid Phone");
+                    txtPhoneNo.Focus();
                 }
+                else
+                {
+                    MessageBox.Show("Invalid CNIC");
+                    txtCNIC.Focus();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Invalid Name");
+                txtName.Focus();
             }
 
             return res;
