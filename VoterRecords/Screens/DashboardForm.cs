@@ -93,6 +93,7 @@ namespace VoterRecords.Screens
         {
             try
             {
+                dgvVoters.DataSource = null;
                 if (rbName.Checked)
                 {
                     var dgvDataSource = db.Voters.Where(x=>x.name.Contains(keyword)).ToList();
@@ -127,6 +128,17 @@ namespace VoterRecords.Screens
         {
             int id = (int)dgvVoters.CurrentRow.Cells[0].Value;
             new AddRecordForm(this, AddRecordForm.taskToPerform.update, id);
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshDGV();
+        }
+
+        private void RefreshDGV()
+        {
+            dgvVoters.DataSource = null;
+            PerformSearchOn(txtSearch.Text);
         }
     }
 }

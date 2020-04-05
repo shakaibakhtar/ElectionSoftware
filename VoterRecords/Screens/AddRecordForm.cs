@@ -40,8 +40,6 @@ namespace VoterRecords.Screens
             }
         }
 
-
-
         private void GoBack()
         {
             this.dashboardForm.Show();
@@ -120,7 +118,6 @@ namespace VoterRecords.Screens
             {
                 AddNewRecord();
             }
-
         }
 
         private void UpdateOldRecord()
@@ -150,8 +147,13 @@ namespace VoterRecords.Screens
                             voter.address = txtAddress.Text;
                         if (!String.IsNullOrEmpty(txtPollingStation.Text))
                             voter.polling_station = txtPollingStation.Text;
+                        if (!String.IsNullOrEmpty(txtCaste.Text))
+                            voter.Caste = txtCaste.Text;
 
                         db.SaveChanges();
+
+                        ResetFormFields();
+
                         MessageBox.Show("Success");
                     }
                     else
@@ -199,9 +201,14 @@ namespace VoterRecords.Screens
                                 voter.address = txtAddress.Text;
                             if (!String.IsNullOrEmpty(txtPollingStation.Text))
                                 voter.polling_station = txtPollingStation.Text;
+                            if (!String.IsNullOrEmpty(txtCaste.Text))
+                                voter.Caste = txtCaste.Text;
 
                             db.Voters.Add(voter);
                             db.SaveChanges();
+
+                            ResetFormFields();
+
                             MessageBox.Show("Success");
                         }
                         else
@@ -233,8 +240,11 @@ namespace VoterRecords.Screens
                     {
                         res = true;
                     }
-                    MessageBox.Show("Invalid Phone");
-                    txtPhoneNo.Focus();
+                    else
+                    {
+                        MessageBox.Show("Invalid Phone");
+                        txtPhoneNo.Focus();
+                    }
                 }
                 else
                 {
@@ -273,11 +283,27 @@ namespace VoterRecords.Screens
                 txtPhoneNo.Text = voter.phone;
                 txtAddress.Text = voter.address;
                 txtPollingStation.Text = voter.polling_station;
+                txtCaste.Text = voter.Caste;
             }
             catch(Exception ex)
             {
-                MessageBox.Show("Sorry! voter record could not be fetched.\n Please try again later.");
+                MessageBox.Show("Sorry! voter record could not be fetched from the recoerds.\n Please try again later.");
             }
+        }
+
+        private void ResetFormFields()
+        {
+            txtName.Clear();
+            txtFather.Clear();
+            txtCNIC.Clear();
+            txtVoteNo.Clear();
+            txtCaste.Clear();
+            txtFamily.Clear();
+            txtPhoneNo.Clear();
+            txtAddress.Clear();
+            txtPollingStation.Clear();
+
+            txtName.Focus();
         }
 
         //private void SetDefaultText(object sender, string text)

@@ -23,5 +23,6 @@ namespace VoterRecords.Model
         public string voter_no { get; set; }
         public string address { get; set; }
         public string polling_station { get; set; }
+        public string Caste { get; set; }
     }
 }

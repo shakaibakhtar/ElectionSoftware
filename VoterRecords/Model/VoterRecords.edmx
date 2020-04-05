@@ -10,7 +10,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Voter">
           <Key>
@@ -23,8 +23,9 @@
           <Property Name="family" Type="varchar" MaxLength="50" />
           <Property Name="phone" Type="varchar" MaxLength="50" />
           <Property Name="voter_no" Type="varchar" MaxLength="50" />
-          <Property Name="address" Type="varchar" MaxLength="50" />
+          <Property Name="address" Type="varchar(max)" />
           <Property Name="polling_station" Type="varchar" MaxLength="50" />
+          <Property Name="Caste" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityContainer Name="VoterRecordsModelStoreContainer">
           <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
@@ -38,8 +39,8 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Voter">
           <Key>
@@ -52,8 +53,9 @@
           <Property Name="family" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="voter_no" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="polling_station" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Caste" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityContainer Name="VoterRecordsEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Logins" EntityType="Self.Login" />
@@ -76,7 +78,6 @@
           <EntitySetMapping Name="Voters">
             <EntityTypeMapping TypeName="VoterRecordsModel.Voter">
               <MappingFragment StoreEntitySet="Voter">
-                <ScalarProperty Name="polling_station" ColumnName="polling_station" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="father_name" ColumnName="father_name" />
@@ -85,6 +86,8 @@
                 <ScalarProperty Name="phone" ColumnName="phone" />
                 <ScalarProperty Name="voter_no" ColumnName="voter_no" />
                 <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="polling_station" ColumnName="polling_station" />
+                <ScalarProperty Name="Caste" ColumnName="Caste" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

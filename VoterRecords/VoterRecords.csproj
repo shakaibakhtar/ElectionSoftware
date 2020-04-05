@@ -59,25 +59,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Login.cs">
-      <DependentUpon>VoterModel.tt</DependentUpon>
+      <DependentUpon>VoterRecords.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Voter.cs">
-      <DependentUpon>VoterModel.tt</DependentUpon>
+      <DependentUpon>VoterRecords.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\VoterModel.Context.cs">
+    <Compile Include="Model\VoterRecords.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>VoterModel.Context.tt</DependentUpon>
+      <DependentUpon>VoterRecords.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\VoterModel.cs">
+    <Compile Include="Model\VoterRecords.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>VoterModel.tt</DependentUpon>
+      <DependentUpon>VoterRecords.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\VoterModel.Designer.cs">
+    <Compile Include="Model\VoterRecords.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>VoterModel.edmx</DependentUpon>
+      <DependentUpon>VoterRecords.edmx</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -135,12 +135,12 @@
     <EmbeddedResource Include="Screens\Template.resx">
       <DependentUpon>Template.cs</DependentUpon>
     </EmbeddedResource>
-    <EntityDeploy Include="Model\VoterModel.edmx">
+    <EntityDeploy Include="Model\VoterRecords.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>VoterModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>VoterRecords.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model\VoterModel.edmx.diagram">
-      <DependentUpon>VoterModel.edmx</DependentUpon>
+    <None Include="Model\VoterRecords.edmx.diagram">
+      <DependentUpon>VoterRecords.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -157,15 +157,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model\VoterModel.Context.tt">
+    <Content Include="Model\VoterRecords.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>VoterModel.Context.cs</LastGenOutput>
-      <DependentUpon>VoterModel.edmx</DependentUpon>
+      <DependentUpon>VoterRecords.edmx</DependentUpon>
+      <LastGenOutput>VoterRecords.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Model\VoterModel.tt">
+    <Content Include="Model\VoterRecords.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>VoterModel.edmx</DependentUpon>
-      <LastGenOutput>VoterModel.cs</LastGenOutput>
+      <DependentUpon>VoterRecords.edmx</DependentUpon>
+      <LastGenOutput>VoterRecords.cs</LastGenOutput>
     </Content>
     <Content Include="Resources\loginKeysImg.jpeg" />
   </ItemGroup>
