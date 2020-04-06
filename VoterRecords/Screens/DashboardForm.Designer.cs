@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuBar = new System.Windows.Forms.MenuStrip();
             this.changePasswordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addRecordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,7 +78,7 @@
             // 
             this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
             this.logoutToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
-            this.logoutToolStripMenuItem.Text = "Logout";
+            this.logoutToolStripMenuItem.Text = "&Logout";
             this.logoutToolStripMenuItem.Click += new System.EventHandler(this.LogoutToolStripMenuItem_Click);
             // 
             // dgvVoters
@@ -92,9 +93,12 @@
             this.dgvVoters.Location = new System.Drawing.Point(0, 129);
             this.dgvVoters.Name = "dgvVoters";
             this.dgvVoters.ReadOnly = true;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvVoters.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvVoters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvVoters.Size = new System.Drawing.Size(1228, 323);
             this.dgvVoters.TabIndex = 4;
+            this.dgvVoters.TabStop = false;
             this.dgvVoters.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvVoters_CellDoubleClick);
             this.dgvVoters.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DgvVoters_KeyDown);
             // 
@@ -116,7 +120,7 @@
             this.txtSearch.Location = new System.Drawing.Point(348, 94);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(225, 29);
-            this.txtSearch.TabIndex = 2;
+            this.txtSearch.TabIndex = 1;
             this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TxtSearch_KeyDown);
             // 
             // label2
@@ -138,7 +142,7 @@
             this.panel1.Location = new System.Drawing.Point(780, 94);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(149, 29);
-            this.panel1.TabIndex = 1;
+            this.panel1.TabIndex = 3;
             // 
             // rbCNIC
             // 
@@ -148,22 +152,22 @@
             this.rbCNIC.Location = new System.Drawing.Point(80, 4);
             this.rbCNIC.Name = "rbCNIC";
             this.rbCNIC.Size = new System.Drawing.Size(65, 24);
-            this.rbCNIC.TabIndex = 3;
-            this.rbCNIC.TabStop = true;
-            this.rbCNIC.Text = "CNIC";
+            this.rbCNIC.TabIndex = 4;
+            this.rbCNIC.Text = "CN&IC";
             this.rbCNIC.UseVisualStyleBackColor = true;
             // 
             // rbName
             // 
             this.rbName.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.rbName.AutoSize = true;
+            this.rbName.Checked = true;
             this.rbName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbName.Location = new System.Drawing.Point(5, 4);
             this.rbName.Name = "rbName";
             this.rbName.Size = new System.Drawing.Size(69, 24);
-            this.rbName.TabIndex = 2;
+            this.rbName.TabIndex = 3;
             this.rbName.TabStop = true;
-            this.rbName.Text = "Name";
+            this.rbName.Text = "&Name";
             this.rbName.UseVisualStyleBackColor = true;
             // 
             // label3
@@ -184,8 +188,8 @@
             this.btnSearch.Location = new System.Drawing.Point(582, 94);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 29);
-            this.btnSearch.TabIndex = 3;
-            this.btnSearch.Text = "Search";
+            this.btnSearch.TabIndex = 2;
+            this.btnSearch.Text = "&Search";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
@@ -196,8 +200,8 @@
             this.btnRefresh.Location = new System.Drawing.Point(198, 93);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(75, 29);
-            this.btnRefresh.TabIndex = 7;
-            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.TabIndex = 5;
+            this.btnRefresh.Text = "&Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 

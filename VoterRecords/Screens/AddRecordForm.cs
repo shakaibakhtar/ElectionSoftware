@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace VoterRecords.Screens
         VoterRecordsEntities db;
         int voterID = -1;
         taskToPerform task;
+        TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
 
         public enum taskToPerform
         {
@@ -38,6 +40,19 @@ namespace VoterRecords.Screens
             {
                 FillFormFromDatabase();
             }
+
+            using (VoterRecordsEntities db = new VoterRecordsEntities())
+            {
+                AutoCompleteStringCollection source = new AutoCompleteStringCollection();
+
+                var listNames = db.Voters.Select(x => x.address).ToList();
+
+                foreach (string name in listNames)
+                {
+                    source.Add(name);
+                }
+                txtAddress.AutoCompleteCustomSource = source;
+            }
         }
 
         private void GoBack()
@@ -51,6 +66,10 @@ namespace VoterRecords.Screens
             if (e.KeyCode == Keys.Escape)
             {
                 GoBack();
+            }
+            else if (e.KeyCode == Keys.Enter)
+            {
+                btnSave.Focus();
             }
         }
 
@@ -70,15 +89,10 @@ namespace VoterRecords.Screens
             {
                 e.Handled = true;
             }
-            //if(txtCNIC.TextLength < 13)
-            //{
-            //    e.Handled = false;
-            //}
-            //else
-            //{
-            //    e.Handled = true;
-            //    MessageBox.Show("CNIC cannot contain more than 13 digits!");
-            //}
+            if (txtCNIC2.TextLength == 5 && e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+            }
         }
 
         private void TxtPhoneNo_KeyPress(object sender, KeyPressEventArgs e)
@@ -110,6 +124,11 @@ namespace VoterRecords.Screens
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
+            Save();
+        }
+
+        private void Save()
+        {
             if (voterID != -1)
             {
                 UpdateOldRecord();
@@ -135,7 +154,8 @@ namespace VoterRecords.Screens
                         if (!String.IsNullOrEmpty(txtFather.Text))
                             voter.father_name = txtFather.Text;
 
-                        voter.CNIC = txtCNIC.Text;
+                        string cnic = txtCNIC1.Text + txtCNIC2.Text + txtCNIC3.Text;
+                        voter.CNIC = cnic;
 
                         if (!String.IsNullOrEmpty(txtVoteNo.Text))
                             voter.voter_no = txtVoteNo.Text;
@@ -175,13 +195,13 @@ namespace VoterRecords.Screens
             {
                 try
                 {
-                    var cnicCount = db.Voters.Where(x => x.CNIC == txtCNIC.Text).ToList().Count;
-                    var voterNoCount = db.Voters.Where(x => x.voter_no == txtVoteNo.Text).ToList().Count();
+                    var cnicCount = db.Voters.Where(x => x.CNIC == txtCNIC1.Text).ToList().Count;
+                    //var voterNoCount = db.Voters.Where(x => x.voter_no == txtVoteNo.Text).ToList().Count();
 
                     if (cnicCount < 1)
                     {
-                        if (voterNoCount < 1)
-                        {
+                        //if (voterNoCount < 1)
+                        //{
                             Voter voter = new Voter();
 
                             voter.name = txtName.Text;
@@ -189,7 +209,8 @@ namespace VoterRecords.Screens
                             if (!String.IsNullOrEmpty(txtFather.Text))
                                 voter.father_name = txtFather.Text;
 
-                            voter.CNIC = txtCNIC.Text;
+                            string cnic = txtCNIC1.Text + txtCNIC2.Text + txtCNIC3.Text;
+                            voter.CNIC = cnic;
 
                             if (!String.IsNullOrEmpty(txtVoteNo.Text))
                                 voter.voter_no = txtVoteNo.Text;
@@ -210,15 +231,15 @@ namespace VoterRecords.Screens
                             ResetFormFields();
 
                             MessageBox.Show("Success");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Voter Number: " + txtVoteNo.Text + " already exist");
-                        }
+                        //}
+                        //else
+                        //{
+                        //    MessageBox.Show("Voter Number: " + txtVoteNo.Text + " already exist");
+                        //}
                     }
                     else
                     {
-                        MessageBox.Show("CNIC: " + txtCNIC.Text + " already exist");
+                        MessageBox.Show("CNIC: " + txtCNIC1.Text + " already exist");
                     }
                 }
                 catch (Exception ex)
@@ -232,9 +253,11 @@ namespace VoterRecords.Screens
         {
             bool res = false;
 
+            string cnic = txtCNIC1.Text + txtCNIC2.Text + txtCNIC3.Text;
+
             if (!String.IsNullOrEmpty(txtName.Text))
             {
-                if ((!String.IsNullOrEmpty(txtCNIC.Text)) && (txtCNIC.TextLength == 13))
+                if ((!String.IsNullOrEmpty(cnic)) && (cnic.Length == 13))
                 {
                     if ((!String.IsNullOrEmpty(txtPhoneNo.Text)) && (txtPhoneNo.TextLength == 11 || txtPhoneNo.TextLength == 0))
                     {
@@ -249,7 +272,7 @@ namespace VoterRecords.Screens
                 else
                 {
                     MessageBox.Show("Invalid CNIC");
-                    txtCNIC.Focus();
+                    txtCNIC1.Focus();
                 }
             }
             else
@@ -275,9 +298,13 @@ namespace VoterRecords.Screens
             {
                 var voter = db.Voters.Where(x => x.id == voterID).FirstOrDefault();
 
+                string cnic = voter.CNIC;
+
                 txtName.Text = voter.name;
                 txtFather.Text = voter.father_name;
-                txtCNIC.Text = voter.CNIC;
+                txtCNIC1.Text = voter.CNIC.Substring(0, 5);
+                txtCNIC2.Text = cnic.Substring(5, 7);
+                txtCNIC3.Text = cnic.Substring(12, 1);
                 txtVoteNo.Text = voter.voter_no;
                 txtFamily.Text = voter.family;
                 txtPhoneNo.Text = voter.phone;
@@ -295,15 +322,105 @@ namespace VoterRecords.Screens
         {
             txtName.Clear();
             txtFather.Clear();
-            txtCNIC.Clear();
+            txtCNIC1.Text = "34402";
+            txtCNIC2.Clear();
+            txtCNIC3.Clear();
             txtVoteNo.Clear();
             txtCaste.Clear();
             txtFamily.Clear();
             txtPhoneNo.Clear();
-            txtAddress.Clear();
+            txtAddress.Text = "Challianwala";
             txtPollingStation.Clear();
 
             txtName.Focus();
+        }
+
+        private void txtName_Leave(object sender, EventArgs e)
+        {
+            txtName.Text = ti.ToTitleCase(txtName.Text);
+        }
+
+        private void txtCNIC_TextChanged(object sender, EventArgs e)
+        {
+            if(txtCNIC1.TextLength == 5)
+            {
+                txtCNIC2.Focus();
+            }
+        }
+
+        private void txtCNIC2_TextChanged(object sender, EventArgs e)
+        {
+            if (txtCNIC2.TextLength == 7)
+            {
+                txtCNIC3.Focus();
+            }
+        }
+
+        private void txtCNIC2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+            if (txtCNIC2.TextLength == 7 && e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtCNIC3_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+            if (txtCNIC3.TextLength == 1 && e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtCNIC3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Back && (txtCNIC3.TextLength == 1 || txtCNIC3.TextLength == 0))
+            {
+                txtCNIC3.Clear();
+                txtCNIC2.Focus();
+            }
+        }
+
+        private void txtCNIC2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Back && (txtCNIC2.TextLength == 1 || txtCNIC2.TextLength == 0))
+            {
+                txtCNIC2.Clear();
+                txtCNIC1.Focus();
+            }
+        }
+
+        private void txtFather_Leave(object sender, EventArgs e)
+        {
+            txtFather.Text = ti.ToTitleCase(txtFather.Text);
+        }
+
+        private void txtCaste_Leave(object sender, EventArgs e)
+        {
+            txtCaste.Text = ti.ToTitleCase(txtCaste.Text);
+        }
+
+        private void txtFamily_Leave(object sender, EventArgs e)
+        {
+            txtFamily.Text = ti.ToTitleCase(txtFamily.Text);
+        }
+
+        private void txtAddress_Leave(object sender, EventArgs e)
+        {
+            txtAddress.Text = ti.ToTitleCase(txtAddress.Text);
+        }
+
+        private void txtPollingStation_Leave(object sender, EventArgs e)
+        {
+            txtPollingStation.Text = ti.ToTitleCase(txtPollingStation.Text);
         }
 
         //private void SetDefaultText(object sender, string text)

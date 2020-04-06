@@ -14,7 +14,6 @@ namespace VoterRecords.Screens
     public partial class DashboardForm : Template
     {
         LoginForm loginForm;
-        VoterRecordsEntities db;
 
         public DashboardForm(LoginForm loginForm)
         {
@@ -42,7 +41,7 @@ namespace VoterRecords.Screens
 
         private void DashboardForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Escape)
+            if (e.KeyCode == Keys.Escape)
             {
                 goBack();
             }
@@ -60,7 +59,6 @@ namespace VoterRecords.Screens
 
         private void DashboardForm_Load(object sender, EventArgs e)
         {
-            db = new VoterRecordsEntities();
             refreshVoterList();
         }
 
@@ -68,7 +66,12 @@ namespace VoterRecords.Screens
         {
             try
             {
-                dgvVoters.DataSource = db.Voters.ToList();
+                using (VoterRecordsEntities db = new VoterRecordsEntities())
+                {
+                    dgvVoters.DataSource = null;
+                    dgvVoters.DataSource = db.Voters.ToList();
+                    SetDgvColumnNames();
+                }
             }
             catch (Exception ex)
             {
@@ -93,21 +96,25 @@ namespace VoterRecords.Screens
         {
             try
             {
-                dgvVoters.DataSource = null;
-                if (rbName.Checked)
+                using (VoterRecordsEntities db = new VoterRecordsEntities())
                 {
-                    var dgvDataSource = db.Voters.Where(x=>x.name.Contains(keyword)).ToList();
-                    dgvVoters.DataSource = dgvDataSource;
-                }
-                else if (rbCNIC.Checked)
-                {
-                    var dgvDataSource = db.Voters.Where(x => x.CNIC.Contains(keyword)).ToList();
-                    dgvVoters.DataSource = dgvDataSource;
+                    if (rbName.Checked)
+                    {
+                        var dgvDataSource = db.Voters.Where(x => x.name.Contains(keyword)).ToList();
+                        dgvVoters.DataSource = dgvDataSource;
+                    }
+                    else if (rbCNIC.Checked)
+                    {
+                        var dgvDataSource = db.Voters.Where(x => x.CNIC.Contains(keyword)).ToList();
+                        dgvVoters.DataSource = dgvDataSource;
+                    }
+
+                    SetDgvColumnNames();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("Error: "+ex.Message);
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
 
@@ -118,7 +125,7 @@ namespace VoterRecords.Screens
 
         private void DgvVoters_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 EditVoter();
             }
@@ -137,8 +144,41 @@ namespace VoterRecords.Screens
 
         private void RefreshDGV()
         {
-            dgvVoters.DataSource = null;
-            PerformSearchOn(txtSearch.Text);
+            try
+            {
+                using (VoterRecordsEntities db = new VoterRecordsEntities())
+                {
+                    dgvVoters.DataSource = null;
+                    dgvVoters.DataSource = db.Voters.ToList();
+                    SetDgvColumnNames();
+                    txtSearch.Clear();
+                }
+
+                //dgvVoters.DataSource = null;
+                //db.Entry(db.Voters).Reload();
+                //dgvVoters.DataSource = db.Voters.ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                MessageBox.Show(ex.StackTrace);
+            }
+        }
+
+        private void SetDgvColumnNames()
+        {
+            dgvVoters.Columns[0].HeaderText = "Sr #";
+            dgvVoters.Columns[1].HeaderText = "Full Name";
+            dgvVoters.Columns[2].HeaderText = "S/O D/O W/O";
+            dgvVoters.Columns[3].HeaderText = "CNIC #";
+            dgvVoters.Columns[4].HeaderText = "Family";
+            dgvVoters.Columns[5].HeaderText = "Phone";
+            dgvVoters.Columns[6].HeaderText = "Voter #";
+            dgvVoters.Columns[7].HeaderText = "Address";
+            dgvVoters.Columns[8].HeaderText = "Polling Station";
+            dgvVoters.Columns[9].HeaderText = "Caste";
+
+            dgvVoters.AutoResizeColumns();
         }
     }
 }

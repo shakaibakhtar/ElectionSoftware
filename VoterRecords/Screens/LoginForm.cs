@@ -28,6 +28,11 @@ namespace VoterRecords.Screens
 
         private void BtnLogin_Click(object sender, EventArgs e)
         {
+            Login();
+        }
+
+        private void Login()
+        {
             if (isAuthenticated(txtPassword.Text))
             {
                 btnLogin.Enabled = true;
@@ -70,7 +75,7 @@ namespace VoterRecords.Screens
         {
             if (e.KeyCode == Keys.Enter)
             {
-                btnLogin.Focus();
+                Login();
             }
         }
 
