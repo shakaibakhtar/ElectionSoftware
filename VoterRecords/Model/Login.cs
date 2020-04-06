@@ -14,6 +14,7 @@ namespace VoterRecords.Model
     
     public partial class Login
     {
+        public int id { get; set; }
         public string password { get; set; }
     }
 }
