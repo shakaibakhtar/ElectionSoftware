@@ -151,23 +151,23 @@ namespace VoterRecords.Screens
                     {
                         voter.name = txtName.Text;
 
-                        if (!String.IsNullOrEmpty(txtFather.Text))
+                        //if (!String.IsNullOrEmpty(txtFather.Text))
                             voter.father_name = txtFather.Text;
 
                         string cnic = txtCNIC1.Text + txtCNIC2.Text + txtCNIC3.Text;
                         voter.CNIC = cnic;
 
-                        if (!String.IsNullOrEmpty(txtVoteNo.Text))
+                        //if (!String.IsNullOrEmpty(txtVoteNo.Text))
                             voter.voter_no = txtVoteNo.Text;
-                        if (!String.IsNullOrEmpty(txtFamily.Text))
+                        //if (!String.IsNullOrEmpty(txtFamily.Text))
                             voter.family = txtFamily.Text;
-                        if (!String.IsNullOrEmpty(txtPhoneNo.Text))
+                        //if (!String.IsNullOrEmpty(txtPhoneNo.Text))
                             voter.phone = txtPhoneNo.Text;
-                        if (!String.IsNullOrEmpty(txtAddress.Text))
+                        //if (!String.IsNullOrEmpty(txtAddress.Text))
                             voter.address = txtAddress.Text;
-                        if (!String.IsNullOrEmpty(txtPollingStation.Text))
+                        //if (!String.IsNullOrEmpty(txtPollingStation.Text))
                             voter.polling_station = txtPollingStation.Text;
-                        if (!String.IsNullOrEmpty(txtCaste.Text))
+                        //if (!String.IsNullOrEmpty(txtCaste.Text))
                             voter.Caste = txtCaste.Text;
 
                         db.SaveChanges();
@@ -193,44 +193,46 @@ namespace VoterRecords.Screens
         {
             if (ValidateFormInputs())
             {
+                string cnicNo = txtCNIC1.Text + txtCNIC2.Text + txtCNIC3.Text;
                 try
                 {
-                    var cnicCount = db.Voters.Where(x => x.CNIC == txtCNIC1.Text).ToList().Count;
+                    var cnicCount = db.Voters.Where(x => x.CNIC == cnicNo).ToList().Count;
                     //var voterNoCount = db.Voters.Where(x => x.voter_no == txtVoteNo.Text).ToList().Count();
-
+                    var voterID = (db.Voters.Max(x => x.id)) + 1;
                     if (cnicCount < 1)
                     {
                         //if (voterNoCount < 1)
                         //{
-                            Voter voter = new Voter();
+                        Voter voter = new Voter();
 
-                            voter.name = txtName.Text;
+                        voter.id = voterID;
+                        voter.name = txtName.Text;
 
-                            if (!String.IsNullOrEmpty(txtFather.Text))
-                                voter.father_name = txtFather.Text;
+                       // if (!String.IsNullOrEmpty(txtFather.Text))
+                            voter.father_name = txtFather.Text;
 
-                            string cnic = txtCNIC1.Text + txtCNIC2.Text + txtCNIC3.Text;
-                            voter.CNIC = cnic;
+                        string cnic = txtCNIC1.Text + txtCNIC2.Text + txtCNIC3.Text;
+                        voter.CNIC = cnic;
 
-                            if (!String.IsNullOrEmpty(txtVoteNo.Text))
-                                voter.voter_no = txtVoteNo.Text;
-                            if (!String.IsNullOrEmpty(txtFamily.Text))
-                                voter.family = txtFamily.Text;
-                            if (!String.IsNullOrEmpty(txtPhoneNo.Text))
-                                voter.phone = txtPhoneNo.Text;
-                            if (!String.IsNullOrEmpty(txtAddress.Text))
-                                voter.address = txtAddress.Text;
-                            if (!String.IsNullOrEmpty(txtPollingStation.Text))
-                                voter.polling_station = txtPollingStation.Text;
-                            if (!String.IsNullOrEmpty(txtCaste.Text))
-                                voter.Caste = txtCaste.Text;
+                        //if (!String.IsNullOrEmpty(txtVoteNo.Text))
+                            voter.voter_no = txtVoteNo.Text;
+                        //if (!String.IsNullOrEmpty(txtFamily.Text))
+                            voter.family = txtFamily.Text;
+                        //if (!String.IsNullOrEmpty(txtPhoneNo.Text))
+                            voter.phone = txtPhoneNo.Text;
+                        //if (!String.IsNullOrEmpty(txtAddress.Text))
+                            voter.address = txtAddress.Text;
+                        //if (!String.IsNullOrEmpty(txtPollingStation.Text))
+                            voter.polling_station = txtPollingStation.Text;
+                        //if (!String.IsNullOrEmpty(txtCaste.Text))
+                            voter.Caste = txtCaste.Text;
 
-                            db.Voters.Add(voter);
-                            db.SaveChanges();
+                        db.Voters.Add(voter);
+                        db.SaveChanges();
 
-                            ResetFormFields();
+                        ResetFormFields();
 
-                            MessageBox.Show("Success");
+                        MessageBox.Show("Success");
                         //}
                         //else
                         //{
@@ -239,7 +241,7 @@ namespace VoterRecords.Screens
                     }
                     else
                     {
-                        MessageBox.Show("CNIC: " + txtCNIC1.Text + " already exist");
+                        MessageBox.Show("CNIC: " + cnicNo + " already exist");
                     }
                 }
                 catch (Exception ex)
@@ -312,7 +314,7 @@ namespace VoterRecords.Screens
                 txtPollingStation.Text = voter.polling_station;
                 txtCaste.Text = voter.Caste;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Sorry! voter record could not be fetched from the recoerds.\n Please try again later.");
             }
@@ -342,7 +344,7 @@ namespace VoterRecords.Screens
 
         private void txtCNIC_TextChanged(object sender, EventArgs e)
         {
-            if(txtCNIC1.TextLength == 5)
+            if (txtCNIC1.TextLength == 5)
             {
                 txtCNIC2.Focus();
             }
@@ -382,7 +384,7 @@ namespace VoterRecords.Screens
 
         private void txtCNIC3_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Back && (txtCNIC3.TextLength == 1 || txtCNIC3.TextLength == 0))
+            if (e.KeyCode == Keys.Back && (txtCNIC3.TextLength == 1 || txtCNIC3.TextLength == 0))
             {
                 txtCNIC3.Clear();
                 txtCNIC2.Focus();
@@ -391,7 +393,7 @@ namespace VoterRecords.Screens
 
         private void txtCNIC2_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Back && (txtCNIC2.TextLength == 1 || txtCNIC2.TextLength == 0))
+            if (e.KeyCode == Keys.Back && (txtCNIC2.TextLength == 1 || txtCNIC2.TextLength == 0))
             {
                 txtCNIC2.Clear();
                 txtCNIC1.Focus();

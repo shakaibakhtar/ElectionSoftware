@@ -180,5 +180,78 @@ namespace VoterRecords.Screens
 
             dgvVoters.AutoResizeColumns();
         }
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            //new PrintPreviewForm(this);
+           // MessageBox.Show("This feature is under development.");
+
+            DataTable table = new DataTable();
+            table.Columns.Add("Sr #", typeof(int));
+            table.Columns.Add("Full Name", typeof(string));
+            table.Columns.Add("S/O D/O W/O", typeof(string));
+            table.Columns.Add("CNIC #", typeof(string));
+            table.Columns.Add("Family", typeof(string));
+            table.Columns.Add("Phone", typeof(string));
+            table.Columns.Add("Voter #", typeof(string));
+            table.Columns.Add("Address", typeof(string));
+            table.Columns.Add("Polling Station", typeof(string));
+            table.Columns.Add("Caste", typeof(string));
+
+
+            using (VoterRecordsEntities db = new VoterRecordsEntities())
+            {
+                var votersList = db.Voters.ToList();
+                foreach(var x in votersList)
+                {
+                    table.Rows.Add(x.id, x.name, x.father_name, x.CNIC, x.family, x.phone, x.voter_no, x.address, x.polling_station, x.Caste);
+                }
+            }
+
+            Microsoft.Office.Interop.Excel.Application excel;
+            Microsoft.Office.Interop.Excel.Workbook excelworkBook;
+            Microsoft.Office.Interop.Excel.Worksheet excelSheet;
+            Microsoft.Office.Interop.Excel.Range excelCellrange;
+
+            excel = new Microsoft.Office.Interop.Excel.Application();
+            // for making Excel visible  
+            excel.Visible = true;
+            excel.DisplayAlerts = true;
+            // Creation a new Workbook  
+            excelworkBook = excel.Workbooks.Add(Type.Missing);
+            // Workk sheet  
+            excelSheet = (Microsoft.Office.Interop.Excel.Worksheet)excelworkBook.ActiveSheet;
+            excelSheet.Name = "Test work sheet";
+
+            excelSheet.Cells[1, 2] = "Date : " + DateTime.Now.ToShortDateString();
+
+            excelSheet.Cells[2, 1] = "Sr #";
+            excelSheet.Cells[2, 2] = "Full Name";
+            excelSheet.Cells[2, 3] = "S/O D/O W/O";
+            excelSheet.Cells[2, 4] = "CNIC #";
+            excelSheet.Cells[2, 5] = "Family";
+            excelSheet.Cells[2, 6] = "Phone";
+            excelSheet.Cells[2, 7] = "Voter #";
+            excelSheet.Cells[2, 8] = "Address";
+            excelSheet.Cells[2, 9] = "Polling Station";
+            excelSheet.Cells[2, 10] = "Caste";
+
+            for (int row = 0; row < table.Rows.Count; row++)
+            {
+                for (int column = 0; column < table.Columns.Count; column++)
+                {
+                    excelSheet.Cells[row + 3, column + 1] = table.Rows[row][column];
+                }
+            }
+
+            // now we resize the columns  
+            excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[table.Rows.Count + 2, table.Columns.Count]];
+            excelCellrange.EntireColumn.AutoFit();
+            Microsoft.Office.Interop.Excel.Borders border = excelCellrange.Borders;
+            border.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+            border.Weight = 2d;
+
+            MessageBox.Show("Done exporting");
+        }
     }
 }
